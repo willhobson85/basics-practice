@@ -1,11 +1,19 @@
 const canvas = document.getElementById('canvas')
+const increaseBtn = document.getElementById('increase')
+const decreaseBtn = document.getElementById('decrease')
+const sizeElement = document.getElementById('size')
+const colorElement = document.getElementById('color')
+const clearBtn = document.getElementById('clear')
 const ctx = canvas.getContext('2d')
 
-let size = 20
+let size = 10
 let color = 'black'
 let isPressed = false
 let x
 let y
+
+colorElement.addEventListener('change', (e) => color = e.target.value)
+clearBtn.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height))
 
 canvas.addEventListener('mousedown', (e) => {
   isPressed = true
@@ -48,3 +56,36 @@ function drawLine(x1, y1, x2, y2) {
   ctx.stroke()
 }
 
+function updateSizeOnScreen() {
+  sizeElement.innerText = size
+}
+
+increaseBtn.addEventListener('click', () => {
+  size += 5
+  if(size > 50) {
+    size = 50
+  }
+  updateSizeOnScreen()
+  checkSize()
+})
+
+decreaseBtn.addEventListener('click', () => {
+  size -= 5
+  if(size < 5) {
+    size = 5
+  }
+  updateSizeOnScreen()
+  checkSize()
+})
+
+function checkSize() {
+  if(size === 5) {
+    decreaseBtn.disabled = true
+  } if(size !== 5) {
+    decreaseBtn.disabled = false
+  } if (size === 50) {
+    increaseBtn.disabled = true
+  } if (size !== 50) {
+    increaseBtn.disabled = false
+  }
+}
